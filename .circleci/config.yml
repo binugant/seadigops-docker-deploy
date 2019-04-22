@@ -57,7 +57,7 @@ jobs:
           name: Deploying cloudformation template
           command: |
             #eb deploy customer-accounts-management-api-test -l $CIRCLE_BUILD_NUM
-            aws cloudformation deploy --template-file ./app/template.yml --stack-name test-stack-abc983838 --region us-east-1 
+            aws cloudformation deploy --template-file "./app/template.yml" --stack-name test-stack-abc983838 --region us-east-1 
   # deploy-prod:
   #   machine: true
   #   working_directory: ~/app
