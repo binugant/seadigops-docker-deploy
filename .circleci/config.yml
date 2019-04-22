@@ -23,7 +23,6 @@ jobs:
           name: Build docker image
           command: |
             docker build -t seadigops-docker-deploy:$CIRCLE_BUILD_NUM -t seadigops-docker-deploy:latest -f ./Dockerfile ./ \
-        #      --build-arg "NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}" \
               --build-arg "BUILD_VERSION=$CIRCLE_BUILD_NUM"
       - run:
           name: Installing aws cloudformation deployment dependencies
