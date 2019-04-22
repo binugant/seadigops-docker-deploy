@@ -1,0 +1,78 @@
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy-test:
+          requires:
+            - build
+      # - deploy-prod: #only deploy if master branch
+      #     requires:
+      #       - build
+      #       - deploy-test
+      #     filters:
+      #       branches:
+      #         only: master
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build docker image
+          command: |
+            docker build -t seadigops-docker-deploy:$CIRCLE_BUILD_NUM -t seadigops-docker-deploy:latest -f ./Dockerfile ./ \
+        #      --build-arg "NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}" \
+              --build-arg "BUILD_VERSION=$CIRCLE_BUILD_NUM"
+      - run:
+          name: Installing aws cloudformation deployment dependencies
+          working_directory: /
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get install python-pip python-dev build-essential
+            sudo pip install awsebcli==3.7.4 --upgrade
+            #sudo pip install 'botocore<1.12'
+      - run:
+          name: Upload docker image to AWS ECR
+          command: |
+            aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+            aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+            $(aws ecr get-login --no-include-email --region us-east-1)
+            docker tag seadigops-docker-deploy:latest 094943256274.dkr.ecr.us-east-1.amazonaws.com/seadigops-docker-deploy:latest
+            docker push 094943256274.dkr.ecr.us-east-1.amazonaws.com/seadigops-docker-deploy:latest
+  deploy-test:
+    machine: true
+    working_directory: ~/app
+    steps:
+      - checkout
+      - run:
+          name: Installing cloudformation deployment dependencies
+          working_directory: /
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get install python-pip python-dev build-essential
+            sudo pip install awsebcli==3.7.4 --upgrade
+            #sudo pip install 'botocore<1.12'
+      - run:
+          name: Deploying cloudformation template
+          command: |
+            #eb deploy customer-accounts-management-api-test -l $CIRCLE_BUILD_NUM
+            aws cloudformation deploy --template-file ./template.yml --stack-name test-stack-abc983838 --region us-east-1 -l $CIRCLE_BUILD_NUM
+  # deploy-prod:
+  #   machine: true
+  #   working_directory: ~/app
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Installing elastic beanstalk deployment dependencies
+  #         working_directory: /
+  #         command: |
+  #           sudo apt-get -y -qq update
+  #           sudo apt-get install python-pip python-dev build-essential
+  #           sudo pip install awsebcli==3.7.4 --upgrade
+  #           sudo pip install 'botocore<1.12'
+  #     - run:
+  #         name: Deploying to elastic beanstalk
+  #         command: |
+  #           eb deploy customer-accounts-management-api-prod -l $CIRCLE_BUILD_NUM

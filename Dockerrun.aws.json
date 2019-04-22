@@ -1,0 +1,18 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "seadigops-docker",
+            "image": "094943256274.dkr.ecr.us-east-1.amazonaws.com/seadigops-docker:latest",
+            "essential": true,
+            "memory": 256,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 3000
+                }
+            ],
+            "Logging": "/var/log/nginx"
+        }
+    ]
+}
