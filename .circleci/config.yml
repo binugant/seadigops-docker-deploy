@@ -1,13 +1,14 @@
 # https://circleci.com/orbs/registry/orb/circleci/aws-ecr
-orbs:
-  orbs:
-  aws-cli: circleci/aws-cli@0.1.13
+# orbs:
+  # orbs:
+  # aws-cli: circleci/aws-cli@0.1.13
+# version: 2.1
 version: 2.1
+
+orbs:
+    hello: circleci/hello-build@0.0.5
+
 workflows:
-  build_and_push_image:
-    jobs:
-      - aws-cli/build_and_push_image:
-          account-url: AWS_ECR_ACCOUNT_URL
-          repo: onecms-infra-tools
-          region: AWS_DEFAULT_REGION
-          tag: latest
+    "Hello Workflow":
+        jobs:
+          - hello/hello-build
