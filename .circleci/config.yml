@@ -6,47 +6,8 @@ version: 2.1
 workflows:
   build_and_push_image:
     jobs:
-      # build:
-        # machine: true
-        # steps:
-          # - checkout
-          # - run:
-              # name: Build docker image
-              # command: |
-                # docker build -t seadigops-docker-deploy:$CIRCLE_BUILD_NUM -t seadigops-docker-deploy:latest -f ./Dockerfile ./ \
-                  # --build-arg "BUILD_VERSION=$CIRCLE_BUILD_NUM"
-          # - run:
-              # name: Installing aws cloudformation deployment dependencies
-              # working_directory: /
-              # command: |
-                # sudo apt-get -y -qq update
-                # #sudo apt-get install python-pip python-dev build-essential
-                # sudo pip install awsebcli==3.7.4 --upgrade
-                # #sudo pip install 'botocore<1.12'
-          # - run:
-              # name: Upload docker image to AWS ECR
-              # command: |
-                # aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
-                # aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
-                # $(aws ecr get-login --no-include-email --region us-east-1)
-                # docker tag seadigops-docker-deploy:latest 094943256274.dkr.ecr.us-east-1.amazonaws.com/seadigops-docker-deploy:latest
-                # docker push 094943256274.dkr.ecr.us-east-1.amazonaws.com/seadigops-docker-deploy:latest
-      deploy-test:
-        machine: true
-        #working_directory: ~/app
-        steps:
-          - checkout
-          - run:
-              name: Installing cloudformation deployment dependencies
-              working_directory: /
-              command: |
-                # sudo apt-get -y -qq update
-                #sudo apt-get install python-pip python-dev build-essential
-                # sudo pip install awsebcli==3.7.4 --upgrade
-                #sudo pip install 'botocore<1.12'
-          - run:
-              name: Deploying cloudformation template
-              working_directory: /
-              command: |
-                #eb deploy customer-accounts-management-api-test -l $CIRCLE_BUILD_NUM
-                aws cloudformation deploy --template-file ../template.yml --stack-name test-stack-abc983838 --region us-east-1 
+      - aws-ecr/build_and_push_image:
+          account-url: AWS_ECR_ACCOUNT_URL
+          repo: onecms-infra-tools
+          region: AWS_DEFAULT_REGION
+          tag: latest
