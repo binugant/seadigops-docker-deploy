@@ -167,5 +167,14 @@ commands:
                 name: Configure AWS default region
                 command: |
                   aws configure set region $<<parameters.aws-region>> \
-                  --profile <<parameters.profile-name>>          
+                  --profile <<parameters.profile-name>>  
+workflows:
+  configure:
+    jobs:
+      - aws-cli/configure:
+          profile-name: default
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws_region: AWS_DEFAULT_REGION
+                            
           
