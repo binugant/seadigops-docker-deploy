@@ -3,12 +3,25 @@
   # orbs:
   # aws-cli: circleci/aws-cli@0.1.13
 # version: 2.1
-version: 2.1
+# version: 2.1
 
+# orbs:
+    # awscli: circleci/aws-cli@0.1.13
+
+# workflows:
+    # "Hello_Workflow":
+        # jobs:
+          # - awscli/Hello_Workflow
+          
+# https://circleci.com/orbs/registry/orb/circleci/aws-ecr
 orbs:
-    awscli: circleci/aws-cli@0.1.13
-
+  aws-ecr: circleci/aws-ecr@1.0.0
+version: 2.1
 workflows:
-    "Hello Workflow":
-        jobs:
-          - awscli/aws-cli
+  build_and_push_image:
+    jobs:
+      - aws-ecr/build_and_push_image:
+          account-url: AWS_ECR_ACCOUNT_URL
+          repo: onecms-infra-tools
+          region: AWS_DEFAULT_REGION
+          tag: latest
