@@ -6,9 +6,9 @@
 version: 2.1
 
 orbs:
-    aws-cli: circleci/aws-cli@0.1.13
+    awscli: circleci/aws-cli@0.1.13
 
 workflows:
     "Hello Workflow":
         jobs:
-          - aws-cli/hello-build
+          - awscli/aws-cli
