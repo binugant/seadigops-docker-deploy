@@ -545,7 +545,7 @@ Resources:
       ToPort: '443'
       CidrIp: 38.108.195.58/32   
       Description: NYC-VPN-443 
-   ingress57:
+  ingress57:
     Type: 'AWS::EC2::SecurityGroupIngress'
     Properties:
       GroupId: !Ref publicsg2
