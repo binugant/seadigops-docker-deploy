@@ -46,7 +46,7 @@ jobs:
 workflows:
   configure:
     jobs:
-      - aws-cli/install
+      - aws-cli
      # - aws-cli/configure:
      #     profile-name: default
      #     aws-access-key-id: AWS_ACCESS_KEY_ID
