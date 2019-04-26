@@ -1,30 +1,4 @@
 # https://circleci.com/orbs/registry/orb/circleci/aws-ecr
-# orbs:
-  # orbs:
-  # aws-cli: circleci/aws-cli@0.1.13
-# version: 2.1
-# version: 2.1
-
-# orbs:
-    # awscli: circleci/aws-cli@0.1.13
-
-# workflows:
-    # "Hello_Workflow":
-        # jobs:
-          # - awscli/Hello_Workflow
-          
-# https://circleci.com/orbs/registry/orb/circleci/aws-ecr
-# orbs:
-  # aws-ecr: circleci/aws-ecr@1.0.0
-# version: 2.1
-# workflows:
-  # build_and_push_image:
-    # jobs:
-      # - aws-ecr/build_and_push_image:
-          # account-url: AWS_ECR_ACCOUNT_URL
-          # repo: seadigops-docker-deploy
-          # region: AWS_DEFAULT_REGION
-          # tag: latest
 version: 2.1
 
 orbs:
@@ -41,16 +15,24 @@ jobs:
            aws-access-key-id: AWS_ACCESS_KEY_ID
            aws-secret-access-key: AWS_SECRET_ACCESS_KEY
            aws-region: AWS_DEFAULT_REGION
-
+  deploy-test:
+    #machine: true
+    #working_directory: ~/app
+    steps:
+      - checkout
+      - run:
+          name: Deploying cloudformation template
+          command: |
+            #eb deploy customer-accounts-management-api-test -l $CIRCLE_BUILD_NUM
+            aws cloudformation deploy --template-file template.yml --stack-name test-stack-abc983838 --region us-east-1 
 
 workflows:
   configure:
     jobs:
       - aws-cli
-     # - aws-cli/configure:
-     #     profile-name: default
-     #     aws-access-key-id: AWS_ACCESS_KEY_ID
-     #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-     #     aws_region: AWS_DEFAULT_REGION
+  install:
+    jobs:
+      - deploy-test
+     
                             
           
