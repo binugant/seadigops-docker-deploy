@@ -27,11 +27,9 @@ jobs:
             aws cloudformation deploy --template-file template.yml --stack-name test-stack-abc983838 --region $AWS_DEFAULT_REGION
 
 workflows:
-   aws cli configure:
+  configure-and-deploy:
     jobs:
       - aws-cli
-   cf deploy:   
-    jobs:  
       - deploy-test:
           requires:
             - aws-cli
