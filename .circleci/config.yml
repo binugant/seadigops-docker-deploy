@@ -16,7 +16,7 @@ jobs:
            aws-secret-access-key: AWS_SECRET_ACCESS_KEY
            aws-region: AWS_DEFAULT_REGION
   deploy-test:
-    #machine: true
+    machine: true
     #working_directory: ~/app
     steps:
       - checkout
