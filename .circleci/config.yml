@@ -24,8 +24,8 @@ jobs:
           name: Deploying cloudformation template
           command: |
             #eb deploy customer-accounts-management-api-test -l $CIRCLE_BUILD_NUM
-            aws cloudformation deploy --template-file template.yml --stack-name test-stack-abc983838+'$AWS_DEFAULT_REGION' --region $AWS_DEFAULT_REGION
-
+            aws cloudformation create-change-set --template-file template.yml --stack-name test-stack-abc983838 --region us-east-1
+            aws cloudformation execute-change-set --template-file template.yml --stack-name test-stack-abc983838 --region us-east-1
 workflows:
   configure-and-deploy:
     jobs:
