@@ -36,11 +36,11 @@ jobs:
     steps:
        - checkout
        - aws-cli/install
-      # - aws-cli/configure:
-          # profile-name: default
-          # aws-access-key-id: AWS_ACCESS_KEY_ID
-          # aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          # aws_region: AWS_DEFAULT_REGION
+       - aws-cli/configure:
+           profile-name: default
+           aws-access-key-id: AWS_ACCESS_KEY_ID
+           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+           aws_region: AWS_DEFAULT_REGION
 
 
 workflows:
