@@ -27,6 +27,7 @@ jobs:
             aws cloudformation create-change-set --template-body template.yml --stack-name test-stack-abc983838 --region us-east-1 --change-set-name set-1
             aws cloudformation execute-change-set --template-file template.yml --stack-name test-stack-abc983838 --region us-east-1 --change-set-name set-1
 workflows:
+version: 2
   configure-and-deploy:
     jobs:
       - aws-cli
